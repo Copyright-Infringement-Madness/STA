@@ -1,3 +1,15 @@
+# DISCLAIMER
+
+Slough Theft Auto is an entirely unofficial parody project and is in absolutely no way affiliated with, endorsed by, sponsored by, or even vaguely acknowledged by Rockstar Games, Take-Two Interactive, or the Grand Theft Auto franchise.
+
+All trademarks, logos, and intellectual property belong to their respective owners. We are simply here to take the piss.
+
+Any resemblance to Grand Theft Auto is purely intentional, entirely satirical, and hopefully protected by a lawyer who understands what a joke is.
+
+This project was created for entertainment purposes only. No actual cars were stolen during development, although several Greggs sausage rolls remain unaccounted for.
+
+Please don’t sue us. We’re from Slough. We’ve suffered enough.
+
 <p align="center">
   <img src="loading_screen.png" alt="Slough Theft Auto loading screen">
 </p>
