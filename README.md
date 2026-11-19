@@ -19,7 +19,7 @@ The map is built from real street data and Environment Agency LiDAR, accurate to
 - **Greggs health system.** Sausage roll heals you. Steak bake gives you armour. Vegan sausage roll heals you, then makes you talk about it.
 - **Multilingual pedestrians.** Get judged in Polish, Arabic and Hindi. Just like the real High Street.
 - **Phone boxes that ring.** Pick one up for a mission. Players under 25 will need the tutorial.
-- **Dogs.** Protect the dog. If the dog dies, the game doesn't end, but you'll know what you did.
+- **Dogs.** Protect the dogs. If a dog dies, the game doesn't end, but you'll know what you did.
 - **Pushchair panic.** When the shooting starts, parents grab the pram and leg it. Ten minutes of research at Queensmere on a Saturday.
 - **Mobility scooter chases** down Burnham High Street. Top speed 4 mph. Still faster than the Bath Road at half five.
 
