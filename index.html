@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Slough Theft Auto</title>
-<meta name="description" content="An open-world crime game set in Slough, UK. Free download for Windows and Mac.">
+<meta name="description" content="An open-world crime game set in Slough, UK. Free download for Windows, Mac and Linux.">
 <link rel="icon" href="loading_screen.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Slough Theft Auto">
 <meta property="og:url" content="https://copyright-infringement-madness.github.io/STA/">
 <meta property="og:title" content="Slough Theft Auto">
-<meta property="og:description" content="An open-world crime game set in Slough, UK. Free download for Windows and Mac.">
+<meta property="og:description" content="An open-world crime game set in Slough, UK. Free download for Windows, Mac and Linux.">
 <meta property="og:image" content="https://copyright-infringement-madness.github.io/STA/loading_screen.png">
 <meta property="og:image:width" content="1024">
 <meta property="og:image:height" content="1024">
 <meta property="og:image:alt" content="Slough Theft Auto cover art">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Slough Theft Auto">
-<meta name="twitter:description" content="An open-world crime game set in Slough, UK. Free download for Windows and Mac.">
+<meta name="twitter:description" content="An open-world crime game set in Slough, UK. Free download for Windows, Mac and Linux.">
 <meta name="twitter:image" content="https://copyright-infringement-madness.github.io/STA/loading_screen.png">
 <style>
   @font-face { font-family: Transport; src: url(fonts/TransportMedium.ttf) format("truetype"); font-weight: 500; font-display: swap; unicode-range: U+0-26, U+28-2018, U+201A-FFFF; }
@@ -196,6 +196,7 @@
     </ul>
 
     <p class="small">Needs a 64-bit PC or Apple Silicon Mac, a graphics card, 8 GB of RAM and the will to live.</p>
+    <p class="small">Linux: the AppImage is one file for any distribution. Make it executable (<code>chmod +x</code>) and run it. There's a .deb and a .tar.gz on the <a href="https://github.com/Copyright-Infringement-Madness/STA/releases/latest">release page</a> too.</p>
     <p class="small"><a href="https://github.com/Copyright-Infringement-Madness/STA/releases">All releases</a> on GitHub.</p>
   </section>
 </main>
@@ -208,11 +209,14 @@
   // Point each sign at the latest release's file for that platform, or close the road if there isn't one.
   (function () {
     var repo = "Copyright-Infringement-Madness/STA";
+    // In order of preference: the first kind the release has is the one the sign gives. For Linux that's the
+    // AppImage, which runs on any distribution without installing; the .deb and the .tar.gz are on the release page.
     var match = {
-      windows: /-win64-setup\.exe$/i,
-      mac: /-macos-[^-]+\.dmg$/i,
-      linux: /-linux.*\.(AppImage|tar\.gz|deb)$/i
+      windows: [/-win64-setup\.exe$/i],
+      mac: [/-macos-[^-]+\.dmg$/i],
+      linux: [/-linux.*\.AppImage$/i, /-linux.*\.deb$/i, /-linux.*\.tar\.gz$/i]
     };
+    var kind = { linux: " AppImage" };
 
     function setSign(os, asset, tag) {
       var sign = document.querySelector('.sign[data-os="' + os + '"]');
@@ -220,7 +224,8 @@
       if (asset) {
         sign.classList.remove("closed");
         sign.href = asset.browser_download_url;
-        detail.textContent = "Download " + tag + ", " + Math.round(asset.size / 1048576) + " MB";
+        var what = /\.AppImage$/i.test(asset.name) ? (kind[os] || "") : "";
+        detail.textContent = "Download " + tag + what + ", " + Math.round(asset.size / 1048576) + " MB";
       } else {
         sign.removeAttribute("href");
         sign.setAttribute("aria-disabled", "true");
@@ -233,7 +238,11 @@
       .then(function (release) {
         var tag = release.tag_name.replace(/^v/, "");
         Object.keys(match).forEach(function (os) {
-          var asset = release.assets.filter(function (a) { return match[os].test(a.name); })[0];
+          var asset;
+          match[os].some(function (pattern) {
+            asset = release.assets.filter(function (a) { return pattern.test(a.name); })[0];
+            return !!asset;
+          });
           setSign(os, asset, tag);
         });
       })
