@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slough Theft Auto</title>
+<meta name="description" content="An open-world crime game set in Slough, UK. Free download for Windows.">
+<meta property="og:title" content="Slough Theft Auto">
+<meta property="og:description" content="An open-world crime game set in Slough, UK.">
+<meta property="og:image" content="loading_screen.png">
+<style>
+  @font-face { font-family: Transport; src: url(fonts/TransportMedium.ttf) format("truetype"); font-weight: 500; font-display: swap; unicode-range: U+0-26, U+28-2018, U+201A-FFFF; }
+  @font-face { font-family: Transport; src: url(fonts/TransportHeavy.ttf) format("truetype"); font-weight: 800; font-display: swap; unicode-range: U+0-26, U+28-2018, U+201A-FFFF; }
+
+  :root {
+    --ink: #000;
+    --paper: #fff;
+    --dusk: #2e2346;          /* the sky behind the tower blocks */
+    --dusk-lit: #c9b6e4;      /* the same sky, lower down */
+    --motorway: #1d5aa6;      /* M4 sign blue */
+    --temporary: #ffd200;     /* roadworks yellow */
+    --muted: #b8aed0;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--dusk);
+    color: var(--paper);
+    font: 500 17px/1.5 Transport, "Helvetica Neue", Arial, sans-serif;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--temporary); outline-offset: 3px; }
+
+  /* The disclaimer, as the game shows it before anything else */
+  .disclaimer {
+    background: var(--ink);
+    padding: 28px 16px 30px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .disclaimer div { max-width: 62ch; margin: 0 auto; }
+  .disclaimer p { margin: 0 0 .8em; }
+  .disclaimer p:last-child { margin: 0; font-weight: 800; }
+  .disclaimer[hidden] { display: none; }
+  .dismiss {
+    margin-top: 20px;
+    padding: 8px 22px;
+    font: 800 16px/1.2 Transport, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    border: 3px solid var(--paper);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .dismiss:hover { background: var(--temporary); border-color: var(--temporary); }
+
+  main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+  }
+
+  /* Cover art: a comic panel, black gutter and a hard offset shadow */
+  .cover {
+    margin: 0;
+    border: 6px solid var(--ink);
+    background: var(--ink);
+    box-shadow: 14px 14px 0 var(--ink);
+    transform: rotate(-1.2deg);
+  }
+  .cover img { display: block; width: 100%; height: auto; }
+
+  .pitch { font-size: 19px; max-width: 34ch; margin: 0 0 32px; }
+  .pitch strong { font-weight: 800; }
+
+  /* Downloads, as signs on the M4 */
+  .signs { display: grid; gap: 16px; margin: 0 0 28px; padding: 4px 12px 4px 4px; list-style: none; }
+  .sign {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 3px solid var(--paper);
+    outline: 4px solid var(--motorway);
+    background: var(--motorway);
+    color: var(--paper);
+    text-decoration: none;
+    box-shadow: 8px 8px 0 4px var(--ink);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  a.sign:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0 4px var(--ink); }
+  a.sign:active { transform: translate(4px, 4px); box-shadow: 4px 4px 0 4px var(--ink); }
+  .junction {
+    flex: none;
+    min-width: 2.2em;
+    padding: 2px 6px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 2px solid var(--paper);
+    font-weight: 800;
+    font-size: 22px;
+    text-align: center;
+  }
+  .sign-text { display: grid; line-height: 1.15; }
+  .platform { font-weight: 800; font-size: 30px; }
+  .detail { font-size: 15px; opacity: .92; }
+
+  .sign.closed {
+    background: var(--temporary);
+    outline-color: var(--temporary);
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .sign.closed[aria-disabled] { box-shadow: 4px 4px 0 4px var(--ink); padding-block: 8px; }
+  .sign.closed[aria-disabled] .platform { font-size: 22px; }
+  .sign.closed .junction { background: var(--paper); color: var(--ink); border-color: var(--ink); }
+
+  .small { color: var(--muted); font-size: 15px; margin: 0; max-width: 46ch; }
+  .small + .small { margin-top: 8px; }
+
+  footer {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px 24px 40px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  footer p { margin: 0; }
+
+  @media (max-width: 860px) {
+    main { grid-template-columns: 1fr; gap: 40px; padding: 32px 16px 24px; }
+    .cover { box-shadow: 8px 8px 0 var(--ink); transform: none; }
+    .pitch { font-size: 18px; }
+    .platform { font-size: 26px; }
+    footer { padding: 16px 16px 32px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sign { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="disclaimer">
+  <div>
+    <p>Slough Theft Auto is an entirely unofficial parody project and is in absolutely no way affiliated with, endorsed by, sponsored by, or even vaguely acknowledged by Rockstar Games, Take-Two Interactive, or the Grand Theft Auto franchise.</p>
+    <p>All trademarks, logos, and intellectual property belong to their respective owners. We are simply here to take the piss.</p>
+    <p>Any resemblance to Grand Theft Auto is purely intentional, entirely satirical, and hopefully protected by a lawyer who understands what a joke is.</p>
+    <p>This project was created for entertainment purposes only. No actual cars were stolen during development, although several Greggs sausage rolls remain unaccounted for.</p>
+    <p>Please don't sue us. We're from Slough. We've suffered enough.</p>
+  </div>
+  <button type="button" class="dismiss">Fair enough</button>
+</header>
+
+<main>
+  <figure class="cover">
+    <img src="loading_screen.png" width="1024" height="1024" alt="Slough Theft Auto cover art: Greggs, Slough station, a Deliveroo rider, tower blocks, a police car and a council officer around the game's title">
+  </figure>
+
+  <section aria-labelledby="get">
+    <h1 id="get" hidden>Download Slough Theft Auto</h1>
+    <p class="pitch">An open-world crime game set in <strong>Slough</strong>, built from real street data. Find your own house. Steal your own car. Get run over outside your own Greggs.</p>
+
+    <ul class="signs">
+      <li><a class="sign closed" data-os="windows" href="https://github.com/Copyright-Infringement-Madness/STA/releases/latest">
+        <span class="junction">J5</span>
+        <span class="sign-text"><span class="platform">Windows</span><span class="detail">Checking for a release…</span></span>
+      </a></li>
+      <li><a class="sign closed" data-os="mac" href="https://github.com/Copyright-Infringement-Madness/STA/releases/latest">
+        <span class="junction">J6</span>
+        <span class="sign-text"><span class="platform">Mac</span><span class="detail">Checking for a release…</span></span>
+      </a></li>
+      <li><a class="sign closed" data-os="linux" href="https://github.com/Copyright-Infringement-Madness/STA/releases/latest">
+        <span class="junction">J7</span>
+        <span class="sign-text"><span class="platform">Linux</span><span class="detail">Checking for a release…</span></span>
+      </a></li>
+    </ul>
+
+    <p class="small">Needs a 64-bit PC or Apple Silicon Mac, a graphics card, 8 GB of RAM and the will to live.</p>
+    <p class="small"><a href="https://github.com/Copyright-Infringement-Madness/STA/releases">All releases</a> on GitHub.</p>
+  </section>
+</main>
+
+<footer>
+  <p>Hosted by Copyright Infringement Madness. All crimes are fictional. Please don't nick cars in real life. Get the bus like everyone else, and suffer.</p>
+</footer>
+
+<script>
+  // Point each sign at the latest release's file for that platform, or close the road if there isn't one.
+  (function () {
+    var repo = "Copyright-Infringement-Madness/STA";
+    var match = {
+      windows: /-win64-setup\.exe$/i,
+      mac: /-macos-[^-]+\.dmg$/i,
+      linux: /-linux.*\.(AppImage|tar\.gz|deb)$/i
+    };
+
+    function setSign(os, asset, tag) {
+      var sign = document.querySelector('.sign[data-os="' + os + '"]');
+      var detail = sign.querySelector(".detail");
+      if (asset) {
+        sign.classList.remove("closed");
+        sign.href = asset.browser_download_url;
+        detail.textContent = "Download " + tag + ", " + Math.round(asset.size / 1048576) + " MB";
+      } else {
+        sign.removeAttribute("href");
+        sign.setAttribute("aria-disabled", "true");
+        detail.textContent = "Road closed. Not out yet.";
+      }
+    }
+
+    fetch("https://api.github.com/repos/" + repo + "/releases/latest")
+      .then(function (r) { if (!r.ok) throw r.status; return r.json(); })
+      .then(function (release) {
+        var tag = release.tag_name.replace(/^v/, "");
+        Object.keys(match).forEach(function (os) {
+          var asset = release.assets.filter(function (a) { return match[os].test(a.name); })[0];
+          setSign(os, asset, tag);
+        });
+      })
+      .catch(function () {
+        // GitHub didn't answer: leave every sign pointing at the releases page.
+        document.querySelectorAll(".sign .detail").forEach(function (d) { d.textContent = "See the latest release"; });
+      });
+  })();
+
+  // Fair enough: put the disclaimer away for the rest of this visit.
+  (function () {
+    var disclaimer = document.querySelector(".disclaimer");
+    try { if (sessionStorage.getItem("disclaimer-dismissed")) disclaimer.hidden = true; } catch (e) {}
+    disclaimer.querySelector(".dismiss").addEventListener("click", function () {
+      disclaimer.hidden = true;
+      try { sessionStorage.setItem("disclaimer-dismissed", "1"); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
