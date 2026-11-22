@@ -43,7 +43,7 @@ Things escalate. A confectionery factory is involved. We can't say which one, wh
 
 ## System requirements
 
-- x64 Windows PC or Apple Silicon Mac, a graphics card, and the will to live
+- x64 Windows PC or a Mac (Apple Silicon or Intel, macOS 11 or later), a graphics card, and the will to live
 - 8 GB RAM
 - Prior experience of the M4 between junctions 5 and 7
 
